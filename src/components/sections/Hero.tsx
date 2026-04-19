@@ -19,9 +19,9 @@ export function Hero({ scrollToSection }: HeroProps) {
             transition={{ duration: 0.6 }}
             className="border-r-0 md:border-r border-border p-8 md:p-10 flex flex-col gap-12 md:gap-20"
           >
-            <motion.p className="font-['DM_Serif_Display',serif] text-[32px] md:text-[40px] leading-[0.5] cursor-default text-foreground">
+            <p className="font-['DM_Serif_Display',serif] text-[32px] md:text-[40px] leading-[0.5] cursor-default text-foreground">
               rare
-            </motion.p>
+            </p>
             <motion.p
               style={{ opacity }}
               className="font-['DM_Sans',sans-serif] font-medium text-[32px] md:text-[48px] leading-[1.1] text-brand-purple"

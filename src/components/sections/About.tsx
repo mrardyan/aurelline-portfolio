@@ -16,14 +16,14 @@ export function About({ imageSrc }: AboutProps) {
             transition={{ duration: 0.6 }}
             className="border-r-0 md:border-r border-border p-6 md:p-10 flex items-center justify-center overflow-hidden"
           >
-            <motion.div transition={{ duration: 0.3 }} className="relative w-full h-full">
+            <div className="relative w-full h-full">
               <img
                 alt="Rare - Brand Manager"
                 className="w-full h-full sm:min-h-[300px] object-cover transition-all duration-500 select-none user-select-none pointer-events-none"
                 src={imageSrc}
                 draggable="false"
               />
-            </motion.div>
+            </div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

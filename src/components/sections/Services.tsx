@@ -34,10 +34,13 @@ export function Services({ services }: ServicesProps) {
             const isLastMobile = index === total - 1
             const isLastTablet = index >= total - (total % 2 === 0 ? 2 : total % 2)
             const isLastDesktop = index >= total - (total % 3 === 0 ? 3 : total % 3)
+            const mobileBorderClass = isLastMobile ? 'border-b-0' : 'border-b'
+            const tabletBorderClass = isLastTablet ? 'sm:border-b-0' : 'sm:border-b'
+            const desktopBorderClass = isLastDesktop ? 'lg:border-b-0' : 'lg:border-b'
 
             return (
               <motion.div
-                key={index}
+                key={service.title}
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 20 } },
@@ -48,17 +51,15 @@ export function Services({ services }: ServicesProps) {
                   sm:border-r sm:[&:nth-child(2n)]:border-r-0
                   lg:border-r lg:[&:nth-child(3n)]:border-r-0
                   lg:[&:nth-child(2n)]:border-r
-                  ${isLastMobile ? 'border-b-0' : 'border-b'}
-                  sm:${isLastTablet ? 'border-b-0' : 'border-b'}
-                  lg:${isLastDesktop ? 'border-b-0' : 'border-b'}
+                  ${mobileBorderClass} ${tabletBorderClass} ${desktopBorderClass}
                 `}
               >
                 <h4 className="font-['DM_Sans',sans-serif] font-semibold text-[18px] md:text-[20px] mb-4 text-foreground">
                   {service.title}
                 </h4>
                 <ul className="space-y-2">
-                  {service.items.map((item, i) => (
-                    <li key={i} className="font-['Open_Sans',sans-serif] text-[14px] text-muted-foreground flex items-start">
+                  {service.items.map((item) => (
+                    <li key={item} className="font-['Open_Sans',sans-serif] text-[14px] text-muted-foreground flex items-start">
                       <span className="mr-2 text-primary">•</span>
                       <span>{item}</span>
                     </li>

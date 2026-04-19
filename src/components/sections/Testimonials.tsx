@@ -23,7 +23,7 @@ export function Testimonials({ testimonials }: TestimonialsProps) {
         <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.map((testimonial, index) => (
             <div
-              key={index}
+              key={`${testimonial.author}-${testimonial.company}`}
               className={`border border-border p-6 md:p-8 bg-card transition-colors hover:bg-accent/5 shadow-sm ${gridInView ? 'anim-fade-in-up' : 'opacity-0'}`}
               style={gridInView ? { animationDelay: `${0.2 + index * 0.15}s` } : undefined}
             >
