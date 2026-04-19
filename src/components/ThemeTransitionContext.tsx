@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react'
+import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 
 interface ThemeTransitionContextType {
@@ -13,6 +13,13 @@ export function ThemeTransitionProvider({ children }: { children: React.ReactNod
   const { setTheme, resolvedTheme } = useTheme()
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [transitionColors, setTransitionColors] = useState({ bg: '#564BB4', logo: '#ffffff' })
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current !== null) clearTimeout(timerRef.current)
+    }
+  }, [])
 
   const toggleTheme = useCallback(() => {
     if (isTransitioning) return
@@ -25,7 +32,7 @@ export function ThemeTransitionProvider({ children }: { children: React.ReactNod
 
     setIsTransitioning(true)
 
-    setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
       setIsTransitioning(false)
     }, 1800)

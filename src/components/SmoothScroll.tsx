@@ -18,12 +18,13 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       infinite: false,
     })
 
+    let rafId: number
     function raf(time: number) {
       lenis.raf(time)
-      requestAnimationFrame(raf)
+      rafId = requestAnimationFrame(raf)
     }
 
-    requestAnimationFrame(raf)
+    rafId = requestAnimationFrame(raf)
 
     const hash = window.location.hash
     if (hash) {
@@ -38,6 +39,7 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
     window.lenis = lenis
 
     return () => {
+      cancelAnimationFrame(rafId)
       lenis.destroy()
       window.lenis = undefined
     }
