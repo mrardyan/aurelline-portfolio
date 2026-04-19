@@ -5,18 +5,24 @@ import type { CaseStudy } from '@/types/content'
 
 export function CaseStudyPage() {
   const { slug } = useParams<{ slug: string }>()
-  const [caseStudy, setCaseStudy] = useState<CaseStudy | null>(null)
+  const [caseStudy, setCaseStudy] = useState<CaseStudy | null | undefined>(undefined)
 
   useEffect(() => {
     if (slug) cms.getCaseStudy(slug).then(setCaseStudy)
   }, [slug])
 
-  if (!caseStudy) {
+  if (caseStudy === undefined) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="font-['DM_Sans',sans-serif] text-muted-foreground">
-          {caseStudy === null ? 'Loading…' : 'Case study not found.'}
-        </p>
+        <p className="font-['DM_Sans',sans-serif] text-muted-foreground">Loading…</p>
+      </div>
+    )
+  }
+
+  if (caseStudy === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="font-['DM_Sans',sans-serif] text-muted-foreground">Case study not found.</p>
       </div>
     )
   }

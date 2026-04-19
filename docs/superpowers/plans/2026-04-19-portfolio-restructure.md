@@ -12,7 +12,7 @@
 
 ## No Test Runner
 
-This project has no test framework configured. Verification uses `npm run build` to confirm TypeScript compilation and bundling succeed. Spot-check `npm run dev` after Tasks 9, 12, and 13 to confirm the UI renders.
+This project has no test framework configured. Verification uses `bun run dev` to confirm TypeScript compilation and bundling succeed. Spot-check `bun run dev` after Tasks 9, 12, and 13 to confirm the UI renders.
 
 ---
 
@@ -138,7 +138,7 @@ export interface WorkCategory {
 - [ ] Verify build passes:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds (new file, no consumers yet)
@@ -329,7 +329,7 @@ export const workCategories: WorkCategory[] = [
 - [ ] Verify build:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds
@@ -419,7 +419,7 @@ export const sanityRepo: ContentRepository = {
 - [ ] Verify build:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds
@@ -476,7 +476,7 @@ declare global {
 - [ ] Verify build:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds
@@ -572,7 +572,7 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
 - [ ] Verify build:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds
@@ -611,7 +611,7 @@ Expected: same count as `src/app/components/ui/`
 - [ ] Verify build:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds (old ui/ still exists at `src/app/components/ui/`, no conflicts)
@@ -926,7 +926,7 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
 - [ ] Verify build:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds
@@ -1174,7 +1174,7 @@ export function Footer({ scrollToSection }: FooterProps) {
 - [ ] Verify build:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds
@@ -1667,7 +1667,7 @@ export function Works({ categories }: WorksProps) {
 - [ ] Verify build:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds
@@ -1966,7 +1966,7 @@ export function ContactPage() {
 - [ ] Verify build (Tasks 10–12 together):
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds — router.tsx and all pages now compile
@@ -2009,7 +2009,7 @@ createRoot(document.getElementById('root')!).render(
 - [ ] Verify build:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds
@@ -2017,7 +2017,7 @@ Expected: Build succeeds
 - [ ] Start dev server and confirm the site renders:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run dev
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Open http://localhost:5173. Verify:
@@ -2054,7 +2054,7 @@ rm -rf "/Users/ardyan/Downloads/Enhance Personal Portfolio Site/src/imports"
 - [ ] Verify build still passes (confirming nothing relied on the deleted files):
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds with no import errors
@@ -2083,7 +2083,7 @@ git commit -m "chore: delete src/app/ and Figma import artifacts"
 - [ ] Verify build:
 
 ```bash
-cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && npm run build
+cd "/Users/ardyan/Downloads/Enhance Personal Portfolio Site" && bun run dev
 ```
 
 Expected: Build succeeds

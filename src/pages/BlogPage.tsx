@@ -3,7 +3,7 @@ import { cms } from '@/lib/cms'
 import type { Post } from '@/types/content'
 
 export function BlogPage() {
-  const [posts, setPosts] = useState<Post[]>([])
+  const [posts, setPosts] = useState<Post[] | undefined>(undefined)
 
   useEffect(() => {
     cms.getPosts().then(setPosts)
@@ -14,7 +14,9 @@ export function BlogPage() {
       <h1 className="font-['DM_Sans',sans-serif] font-semibold text-[32px] md:text-[48px] mb-10 text-foreground">
         Blog
       </h1>
-      {posts.length === 0 ? (
+      {posts === undefined ? (
+        <p className="font-['Open_Sans',sans-serif] text-muted-foreground">Loading…</p>
+      ) : posts.length === 0 ? (
         <p className="font-['Open_Sans',sans-serif] text-muted-foreground">No posts yet.</p>
       ) : (
         <div className="flex flex-col gap-6">
