@@ -1,0 +1,209 @@
+<h2>Cursor Blend Mode Approaches</h2>
+<p class="subtitle">How should the blob interact with the background? Hover over each demo to see the effect.</p>
+
+<style>
+  .demos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .demo-card {
+    border: 2px solid transparent;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .demo-card:hover {
+    transform: translateY(-2px);
+  }
+  .demo-card.selected {
+    border-color: #7c6fcd;
+  }
+  .demo-panel {
+    position: relative;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .demo-panel-split {
+    display: flex;
+    height: 160px;
+  }
+  .demo-half {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    font-family: sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .blob {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: pulse 2s ease-in-out infinite alternate;
+  }
+  @keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(0.9); }
+    to { transform: translate(-50%, -50%) scale(1.1); }
+  }
+  .blob-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { top: 45%; left: 40%; }
+    33% { top: 55%; left: 60%; }
+    66% { top: 35%; left: 55%; }
+  }
+
+  /* Option A: Always white with mix-blend-difference */
+  .option-a-dark { background: #111; color: #aaa; }
+  .option-a-light { background: #f5f5f5; color: #555; }
+  .blob-a { background: #fff; mix-blend-mode: difference; }
+
+  /* Option B: Foreground color (theme-aware) */
+  .option-b-dark { background: #111; color: #aaa; }
+  .option-b-light { background: #f5f5f5; color: #555; }
+  .blob-b-dark { background: #fff; mix-blend-mode: difference; }
+  .blob-b-light { background: #000; mix-blend-mode: difference; }
+
+  /* Option C: Exclusion blend — softer effect */
+  .option-c-dark { background: #111; color: #aaa; }
+  .option-c-light { background: #f5f5f5; color: #555; }
+  .blob-c { background: #fff; mix-blend-mode: exclusion; }
+
+  .demo-label {
+    padding: 12px 14px;
+    background: #1a1a2e;
+    color: #e0e0e0;
+  }
+  .demo-label h3 { margin: 0 0 4px; font-size: 14px; color: #fff; }
+  .demo-label p { margin: 0; font-size: 12px; color: #999; }
+  .mode-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-top: 4px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .tag-dark { background: #2a2a3e; color: #a89eff; }
+  .tag-light { background: #ededf5; color: #564BB4; }
+  .half-label {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    opacity: 0.6;
+  }
+</style>
+
+<div class="demos-grid">
+
+  <!-- Option A -->
+  <div class="demo-card option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="demo-panel-split">
+      <div class="demo-half option-a-dark">
+        <span class="half-label" style="color:#aaa">DARK</span>
+        <span>Hello World</span>
+        <div class="blob blob-a blob-float"></div>
+      </div>
+      <div class="demo-half option-a-light">
+        <span class="half-label" style="color:#555">LIGHT</span>
+        <span>Hello World</span>
+        <div class="blob blob-a blob-float"></div>
+      </div>
+    </div>
+    <div class="demo-label">
+      <h3>Always White · mix-blend-difference</h3>
+      <p>White blob inverts everything. Appears bright on dark, dark on light.</p>
+      <span class="mode-tag tag-dark">current</span>
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="demo-card option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="demo-panel-split">
+      <div class="demo-half option-b-dark">
+        <span class="half-label" style="color:#aaa">DARK</span>
+        <span>Hello World</span>
+        <div class="blob blob-b-dark blob-float"></div>
+      </div>
+      <div class="demo-half option-b-light">
+        <span class="half-label" style="color:#555">LIGHT</span>
+        <span>Hello World</span>
+        <div class="blob blob-b-light blob-float"></div>
+      </div>
+    </div>
+    <div class="demo-label">
+      <h3>Theme-aware Color · mix-blend-difference</h3>
+      <p>White blob in dark mode, black blob in light mode. Color from CSS var(--foreground).</p>
+      <span class="mode-tag tag-dark">dark: white</span>
+      <span class="mode-tag tag-light">light: black</span>
+    </div>
+  </div>
+
+  <!-- Option C -->
+  <div class="demo-card option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="demo-panel-split">
+      <div class="demo-half option-c-dark">
+        <span class="half-label" style="color:#aaa">DARK</span>
+        <span>Hello World</span>
+        <div class="blob blob-c blob-float"></div>
+      </div>
+      <div class="demo-half option-c-light">
+        <span class="half-label" style="color:#555">LIGHT</span>
+        <span>Hello World</span>
+        <div class="blob blob-c blob-float"></div>
+      </div>
+    </div>
+    <div class="demo-label">
+      <h3>Always White · mix-blend-exclusion</h3>
+      <p>Softer, dreamier inversion. Less stark than difference — midtones shift more gently.</p>
+      <span class="mode-tag tag-dark">softer x-ray</span>
+    </div>
+  </div>
+
+  <!-- Option D: difference + larger, semi-transparent -->
+  <div class="demo-card option" data-choice="d" onclick="toggleSelect(this)">
+    <div class="letter">D</div>
+    <div class="demo-panel-split">
+      <div class="demo-half option-a-dark">
+        <span class="half-label" style="color:#aaa">DARK</span>
+        <span>Hello World</span>
+        <div class="blob blob-float" style="background:rgba(255,255,255,0.85);mix-blend-mode:difference;width:64px;height:64px;border-radius:50%;position:absolute;pointer-events:none;animation:float 3s ease-in-out infinite;filter:blur(2px)"></div>
+      </div>
+      <div class="demo-half option-a-light">
+        <span class="half-label" style="color:#555">LIGHT</span>
+        <span>Hello World</span>
+        <div class="blob blob-float" style="background:rgba(255,255,255,0.85);mix-blend-mode:difference;width:64px;height:64px;border-radius:50%;position:absolute;pointer-events:none;animation:float 3s ease-in-out infinite;filter:blur(2px)"></div>
+      </div>
+    </div>
+    <div class="demo-label">
+      <h3>White + Blur · mix-blend-difference</h3>
+      <p>Larger blob with a soft blur edge — feels more like a glowing X-ray lens.</p>
+      <span class="mode-tag tag-dark">glowing lens</span>
+    </div>
+  </div>
+
+</div>
+
+<p style="margin-top:20px;font-size:13px;color:#888;text-align:center">Click an option to select it, then let me know your pick in the terminal.</p>

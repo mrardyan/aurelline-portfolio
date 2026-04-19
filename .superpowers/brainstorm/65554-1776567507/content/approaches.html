@@ -1,0 +1,86 @@
+<h2>3 Approaches to Structure & Architecture</h2>
+<p class="subtitle">Pick the one that fits your goals — I've marked my recommendation</p>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Minimal Patch</h3>
+      <p style="color:#aaa;margin:0.25rem 0 0.75rem">Fix the obvious Figma-export mess, extract data files, move the hook. Keep the <code>src/app/</code> nesting as-is.</p>
+      <div style="font-family:monospace;font-size:12px;line-height:1.8;background:#111;padding:0.75rem;border-radius:6px">
+        src/<br>
+        &nbsp;&nbsp;app/<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;App.tsx<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;components/ (sections/, ui/)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">data/</span> ← extracted static data<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">hooks/</span> ← use-once-in-view<br>
+        &nbsp;&nbsp;assets/<br>
+        &nbsp;&nbsp;styles/<br>
+      </div>
+      <div class="pros-cons" style="margin-top:0.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>Low risk, fast</li><li>Minimal churn</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>No pages/routing layer</li><li>No CMS abstraction</li><li>Still outgrows fast</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option selected" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B ⭐</div>
+    <div class="content">
+      <h3>Standard React Structure + Repository Pattern <span style="font-size:12px;background:#7c3aed;color:white;padding:2px 8px;border-radius:99px;vertical-align:middle">Recommended</span></h3>
+      <p style="color:#aaa;margin:0.25rem 0 0.75rem">Full restructure with pages, a CMS-agnostic content layer, and clear separation of concerns.</p>
+      <div style="font-family:monospace;font-size:12px;line-height:1.8;background:#111;padding:0.75rem;border-radius:6px">
+        src/<br>
+        &nbsp;&nbsp;<span style="color:#ffd700">pages/</span>         ← Home, CaseStudy, Work, Blog, Contact<br>
+        &nbsp;&nbsp;<span style="color:#ffd700">components/</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;sections/    ← portfolio sections<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;ui/          ← shadcn primitives<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;layout/      ← Navbar, Footer<br>
+        &nbsp;&nbsp;<span style="color:#4ade80">lib/</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">cms/</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">index.ts</span>    ← ContentRepository interface<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">sanity.ts</span>   ← Sanity adapter<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">static.ts</span>   ← local fallback / dev mock<br>
+        &nbsp;&nbsp;<span style="color:#ffd700">hooks/</span>         ← useOnceInView, useCMS…<br>
+        &nbsp;&nbsp;<span style="color:#ffd700">types/</span>         ← CaseStudy, Work, Post, etc.<br>
+        &nbsp;&nbsp;<span style="color:#ffd700">data/</span>          ← static content (fallback)<br>
+        &nbsp;&nbsp;assets/<br>
+        &nbsp;&nbsp;styles/<br>
+        &nbsp;&nbsp;router.tsx     ← React Router routes<br>
+        &nbsp;&nbsp;main.tsx<br>
+      </div>
+      <div class="pros-cons" style="margin-top:0.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>Swap Sanity for any CMS later</li><li>Pages layer ready for routing</li><li>Clear boundaries — easy to navigate</li><li>Types make content self-documenting</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>More upfront work than A</li><li>More files to move</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Feature-Based Modules</h3>
+      <p style="color:#aaa;margin:0.25rem 0 0.75rem">Group everything by feature: <code>features/blog/</code>, <code>features/case-studies/</code>, etc. Each feature owns its page, components, types, and data queries.</p>
+      <div style="font-family:monospace;font-size:12px;line-height:1.8;background:#111;padding:0.75rem;border-radius:6px">
+        src/<br>
+        &nbsp;&nbsp;<span style="color:#ffd700">features/</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;blog/         ← page + components + types<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;case-studies/<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;works/<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;contact/<br>
+        &nbsp;&nbsp;shared/        ← ui, hooks, lib/cms<br>
+        &nbsp;&nbsp;pages/         ← thin route wrappers<br>
+      </div>
+      <div class="pros-cons" style="margin-top:0.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>Maximum isolation per feature</li><li>Scales to large teams</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Overkill for a one-person portfolio</li><li>More indirection to navigate</li><li>Features share too much to truly isolate</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p style="margin-top:1.5rem;color:#aaa;font-size:13px">
+  <strong>My recommendation: B.</strong> It's the standard for React + CMS projects of this scale — you get clean boundaries and a swappable CMS layer without the overhead of full feature modules. Click to select, then tell me in the terminal.
+</p>

@@ -1,0 +1,105 @@
+<h2>Design · Section 3: Code Cleanup</h2>
+<p class="subtitle">Targeted fixes — nothing speculative, only things that improve the existing code</p>
+
+<div class="section">
+  <h3>1 — Fix <code>scrollToSection</code> prop drilling</h3>
+  <div class="split" style="gap:1rem;align-items:flex-start">
+    <div>
+      <div class="label" style="color:#ff6b6b">Before — drilled through 3 layers</div>
+      <div style="font-family:monospace;font-size:11px;line-height:1.8;background:#1a1a1a;padding:0.75rem;border-radius:6px;color:#ccc;margin-top:0.5rem">
+        App.tsx<br>
+        &nbsp;↓ scrollToSection<br>
+        Hero.tsx → Navbar.tsx (uses it)<br>
+        &nbsp;↓ scrollToSection<br>
+        Footer.tsx (uses it)
+      </div>
+    </div>
+    <div>
+      <div class="label" style="color:#4ade80">After — shared utility</div>
+      <div style="font-family:monospace;font-size:11px;line-height:1.8;background:#1a1a1a;padding:0.75rem;border-radius:6px;color:#ccc;margin-top:0.5rem">
+        <span style="color:#888">// lib/scrollTo.ts</span><br>
+        export function scrollToSection(id: string) {<br>
+        &nbsp;&nbsp;const el = document.getElementById(id)<br>
+        &nbsp;&nbsp;if (el && window.lenis) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;window.lenis.scrollTo(el, { duration: 1.5 })<br>
+        &nbsp;&nbsp;} else {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;el?.scrollIntoView({ behavior: 'smooth' })<br>
+        &nbsp;&nbsp;}<br>
+        }<br><br>
+        <span style="color:#888">// Navbar, Footer import directly</span><br>
+        import { scrollToSection } from '@/lib/scrollTo'
+      </div>
+    </div>
+  </div>
+  <p style="font-size:13px;color:#aaa;margin-top:0.5rem">Also properly types <code>window.lenis</code> via a declaration in <code>vite-env.d.ts</code> — removes the <code>(window as any)</code> cast.</p>
+</div>
+
+<div class="section">
+  <h3>2 — Strip <code>"use client"</code> directives</h3>
+  <div style="border:1px solid #333;border-radius:8px;padding:0.75rem;font-size:13px;color:#aaa">
+    Found in <code>App.tsx</code> and <code>hero.tsx</code>. This is a Next.js server-component directive — it has <strong>no effect in Vite</strong> and misleads anyone reading the code. Both get removed.
+  </div>
+</div>
+
+<div class="section">
+  <h3>3 — Switch to <code>@/</code> imports everywhere</h3>
+  <div class="split" style="gap:1rem">
+    <div>
+      <div class="label" style="color:#ff6b6b">Before</div>
+      <div style="font-family:monospace;font-size:11px;line-height:1.8;background:#1a1a1a;padding:0.75rem;border-radius:6px;color:#ccc;margin-top:0.5rem">
+        import img from '../../assets/personal-picture.png'<br>
+        import { Hero } from '../components/sections/hero'<br>
+        import { scrollTo } from '../../../lib/scroll'
+      </div>
+    </div>
+    <div>
+      <div class="label" style="color:#4ade80">After</div>
+      <div style="font-family:monospace;font-size:11px;line-height:1.8;background:#1a1a1a;padding:0.75rem;border-radius:6px;color:#ccc;margin-top:0.5rem">
+        import img from '@/assets/personal-picture.png'<br>
+        import { Hero } from '@/components/sections/Hero'<br>
+        import { scrollTo } from '@/lib/scrollTo'
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>4 — Clean up <code>package.json</code> name</h3>
+  <div style="border:1px solid #333;border-radius:8px;padding:0.75rem;font-size:13px;color:#aaa">
+    <code>"name": "@figma/my-make-file"</code> → <code>"name": "portfolio"</code>. Figma Make export artifact.
+  </div>
+</div>
+
+<div class="section">
+  <h3>5 — Remove / relocate Figma artifacts</h3>
+  <div style="display:flex;flex-direction:column;gap:0.5rem">
+    <div style="border:1px solid #333;border-radius:8px;padding:0.75rem;font-size:13px;color:#aaa">
+      <strong style="color:#e0e0e0"><code>src/imports/MacBookAir4.tsx</code></strong> — check if used. If yes, rename and move to <code>components/</code>. If no, delete.
+    </div>
+    <div style="border:1px solid #333;border-radius:8px;padding:0.75rem;font-size:13px;color:#aaa">
+      <strong style="color:#e0e0e0"><code>src/imports/svg-kpnmpaf0cj.ts</code></strong> — machine-generated name. Rename to something meaningful or delete if unused.
+    </div>
+    <div style="border:1px solid #333;border-radius:8px;padding:0.75rem;font-size:13px;color:#aaa">
+      <strong style="color:#e0e0e0"><code>components/figma/ImageWithFallback.tsx</code></strong> — rename folder to nothing, move to <code>components/ImageWithFallback.tsx</code>.
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>6 — Rename files to PascalCase</h3>
+  <div style="border:1px solid #333;border-radius:8px;padding:0.75rem;font-size:13px;color:#aaa">
+    React component files should be PascalCase. <code>hero.tsx</code> → <code>Hero.tsx</code>, <code>navbar.tsx</code> → <code>Navbar.tsx</code>, etc. Hooks stay camelCase: <code>useOnceInView.ts</code>.
+  </div>
+</div>
+
+<div style="border:1px solid #7c3aed;border-radius:8px;padding:1rem;margin-top:1rem;background:rgba(124,58,237,0.08)">
+  <strong style="color:#a78bfa">What we're NOT changing</strong>
+  <ul style="font-size:13px;color:#aaa;margin:0.5rem 0 0;padding-left:1.25rem">
+    <li>shadcn <code>ui/</code> components — generated code, leave as-is</li>
+    <li>Tailwind / CSS setup — already correct</li>
+    <li>Vite config — already has <code>@</code> alias and figma asset resolver</li>
+    <li>Unused dependencies — out of scope, risk of breaking things</li>
+  </ul>
+</div>
+
+<p style="color:#aaa;font-size:13px;margin-top:1.5rem">Does this cleanup scope look right? Let me know and I'll write up the full design doc.</p>

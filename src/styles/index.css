@@ -1,0 +1,48 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.anim-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@media (min-width: 1024px) {
+  * {
+    cursor: none !important;
+  }
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: white;
+  z-index: 99999;
+  transition: opacity 300ms ease;
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: white;
+  z-index: 100000;
+  transition: opacity 300ms ease;
+}

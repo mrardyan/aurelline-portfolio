@@ -1,0 +1,59 @@
+<h2>Current Project Structure — Key Issues Found</h2>
+<p class="subtitle">Before we decide on an approach, here's what exists today and the main problems</p>
+
+<div class="split" style="gap:2rem;align-items:flex-start">
+  <div>
+    <h3>📁 Current Structure</h3>
+    <div class="mockup" style="font-family:monospace;font-size:13px;line-height:1.8">
+      <div class="mockup-body" style="background:#1a1a2e;color:#e0e0e0;padding:1rem;border-radius:6px">
+        <span style="color:#888">src/</span><br>
+        &nbsp;&nbsp;<span style="color:#ffd700">app/</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff6b6b">App.tsx</span> <span style="color:#ff4444">← 180 lines, all data here</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffd700">components/</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffd700">sections/</span> ← hero, about, footer…<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffd700">ui/</span> ← shadcn primitives<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffd700">figma/</span> ← ImageWithFallback<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff6b6b">works.tsx</span> <span style="color:#ff4444">← not in sections/</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;navbar.tsx<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;custom-cursor.tsx<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;theme-provider.tsx<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;theme-transition-*.tsx<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff6b6b">use-once-in-view.ts</span> <span style="color:#ff4444">← hook in components/</span><br>
+        &nbsp;&nbsp;<span style="color:#ffd700">assets/</span><br>
+        &nbsp;&nbsp;<span style="color:#ff6b6b">imports/</span> <span style="color:#ff4444">← raw Figma artifacts</span><br>
+        &nbsp;&nbsp;<span style="color:#ffd700">styles/</span><br>
+        &nbsp;&nbsp;main.tsx<br>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h3>⚠️ Problems to Fix</h3>
+    <div class="section" style="display:flex;flex-direction:column;gap:0.75rem">
+      <div style="border:1px solid #ff4444;border-radius:8px;padding:0.75rem;background:rgba(255,68,68,0.07)">
+        <strong style="color:#ff6b6b">Data mixed into App.tsx</strong>
+        <p style="margin:0.25rem 0 0;font-size:13px;color:#aaa">clients[], caseStudies[], testimonials[], services[] are all hardcoded inline — makes App.tsx a 180-line monolith</p>
+      </div>
+      <div style="border:1px solid #ff4444;border-radius:8px;padding:0.75rem;background:rgba(255,68,68,0.07)">
+        <strong style="color:#ff6b6b">"use client" everywhere</strong>
+        <p style="margin:0.25rem 0 0;font-size:13px;color:#aaa">Next.js directive used in a Vite project — meaningless noise</p>
+      </div>
+      <div style="border:1px solid #ff4444;border-radius:8px;padding:0.75rem;background:rgba(255,68,68,0.07)">
+        <strong style="color:#ff6b6b">No hooks/ folder</strong>
+        <p style="margin:0.25rem 0 0;font-size:13px;color:#aaa">use-once-in-view.ts lives in components/ — wrong location</p>
+      </div>
+      <div style="border:1px solid #ff9500;border-radius:8px;padding:0.75rem;background:rgba(255,149,0,0.07)">
+        <strong style="color:#ffa534">@ alias unused</strong>
+        <p style="margin:0.25rem 0 0;font-size:13px;color:#aaa">Vite alias configured but all imports use relative paths like ../../assets/</p>
+      </div>
+      <div style="border:1px solid #ff9500;border-radius:8px;padding:0.75rem;background:rgba(255,149,0,0.07)">
+        <strong style="color:#ffa534">Figma artifact naming</strong>
+        <p style="margin:0.25rem 0 0;font-size:13px;color:#aaa">figma/ folder, MacBookAir4.tsx, svg-kpnmpaf0cj.ts — leaking Figma export names into production code</p>
+      </div>
+      <div style="border:1px solid #ff9500;border-radius:8px;padding:0.75rem;background:rgba(255,149,0,0.07)">
+        <strong style="color:#ffa534">scrollToSection prop drilling</strong>
+        <p style="margin:0.25rem 0 0;font-size:13px;color:#aaa">Passed App → Hero → Navbar and App → Footer; could be a shared utility</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<h2>Design · Section 1: Folder Structure</h2>
+<p class="subtitle">Before → After. Every file has a single clear reason for its location.</p>
+
+<div class="split" style="gap:2rem;align-items:flex-start">
+
+  <div>
+    <h3 style="color:#ff6b6b">Before</h3>
+    <div style="font-family:monospace;font-size:12px;line-height:2;background:#1a1a1a;padding:1rem;border-radius:8px;color:#ccc">
+      src/<br>
+      &nbsp;&nbsp;<span style="color:#ff6b6b">app/</span>                 ← unnecessary nesting<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff6b6b">App.tsx</span>          ← 180 lines + all data<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;components/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff6b6b">figma/</span>         ← Figma-branded name<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sections/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ui/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff6b6b">works.tsx</span>      ← outside sections/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff6b6b">use-once-in-view.ts</span> ← hook in components/<br>
+      &nbsp;&nbsp;<span style="color:#ff6b6b">imports/</span>             ← raw Figma exports<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;MacBookAir4.tsx<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;svg-kpnmpaf0cj.ts<br>
+      &nbsp;&nbsp;assets/<br>
+      &nbsp;&nbsp;styles/<br>
+      &nbsp;&nbsp;main.tsx<br>
+    </div>
+  </div>
+
+  <div>
+    <h3 style="color:#4ade80">After</h3>
+    <div style="font-family:monospace;font-size:12px;line-height:2;background:#1a1a1a;padding:1rem;border-radius:8px;color:#ccc">
+      src/<br>
+      &nbsp;&nbsp;<span style="color:#4ade80">pages/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">HomePage.tsx</span>       ← portfolio landing<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">CaseStudyPage.tsx</span>  ← /case-studies/:slug<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">WorkPage.tsx</span>       ← /works/:slug<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">BlogPage.tsx</span>       ← /blog<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">BlogPostPage.tsx</span>   ← /blog/:slug<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">ContactPage.tsx</span>    ← /contact<br>
+      &nbsp;&nbsp;<span style="color:#ffd700">components/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;sections/          ← hero, about, footer…<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">Works.tsx</span>    ← moved into sections/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;ui/                ← shadcn primitives (unchanged)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;layout/            ← Navbar, Footer (extracted)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">ImageWithFallback.tsx</span> ← renamed, moved up<br>
+      &nbsp;&nbsp;<span style="color:#4ade80">lib/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">cms/</span>               ← CMS abstraction layer<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">index.ts</span>   ← ContentRepository interface<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">sanity.ts</span>  ← Sanity adapter<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">static.ts</span>  ← local fallback / mock<br>
+      &nbsp;&nbsp;<span style="color:#4ade80">hooks/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">useOnceInView.ts</span>   ← moved from components/<br>
+      &nbsp;&nbsp;<span style="color:#4ade80">types/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">content.ts</span>         ← CaseStudy, Work, Post, etc.<br>
+      &nbsp;&nbsp;<span style="color:#4ade80">data/</span>                  ← static content (fallback)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">clients.ts</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">caseStudies.ts</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">testimonials.ts</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">services.ts</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4ade80">works.ts</span><br>
+      &nbsp;&nbsp;assets/<br>
+      &nbsp;&nbsp;styles/<br>
+      &nbsp;&nbsp;<span style="color:#4ade80">router.tsx</span>             ← all React Router routes<br>
+      &nbsp;&nbsp;main.tsx<br>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" style="margin-top:1.5rem">
+  <h3>Key decisions in this structure</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+    <div style="border:1px solid #333;border-radius:8px;padding:0.75rem">
+      <strong>Remove <code>src/app/</code> nesting</strong>
+      <p style="font-size:13px;color:#aaa;margin:0.25rem 0 0">Vite projects don't need an <code>app/</code> wrapper. Flat <code>src/</code> is idiomatic.</p>
+    </div>
+    <div style="border:1px solid #333;border-radius:8px;padding:0.75rem">
+      <strong>Delete <code>src/imports/</code></strong>
+      <p style="font-size:13px;color:#aaa;margin:0.25rem 0 0">Figma export artifacts — renamed or absorbed into proper locations.</p>
+    </div>
+    <div style="border:1px solid #333;border-radius:8px;padding:0.75rem">
+      <strong>Remove all <code>"use client"</code></strong>
+      <p style="font-size:13px;color:#aaa;margin:0.25rem 0 0">Next.js directive — has no effect in Vite.</p>
+    </div>
+    <div style="border:1px solid #333;border-radius:8px;padding:0.75rem">
+      <strong>Switch to <code>@/</code> imports everywhere</strong>
+      <p style="font-size:13px;color:#aaa;margin:0.25rem 0 0">Alias already configured in vite.config.ts — just not used.</p>
+    </div>
+  </div>
+</div>
+
+<p style="margin-top:1.5rem;color:#aaa;font-size:13px">Does this folder structure look right? Let me know in the terminal and I'll move to the routing + CMS design.</p>
