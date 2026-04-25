@@ -122,7 +122,7 @@ export function Footer({ scrollToSection, contact }: FooterProps) {
                 </a>
               }
               <p className="font-['Open_Sans',sans-serif] text-[14px] text-muted-foreground mt-6">
-                © 2026 Rare. All rights reserved.
+                © {new Date().getFullYear()} Rare. All rights reserved.
               </p>
             </motion.div>
           </div>
