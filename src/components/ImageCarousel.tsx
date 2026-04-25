@@ -11,7 +11,7 @@ export function ImageCarousel({ images, alt = '' }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' })
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [canScrollPrev, setCanScrollPrev] = useState(false)
-  const [canScrollNext, setCanScrollNext] = useState(true)
+  const [canScrollNext, setCanScrollNext] = useState(images.length > 1)
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return
@@ -29,6 +29,8 @@ export function ImageCarousel({ images, alt = '' }: Props) {
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
+
+  if (images.length === 0) return null
 
   return (
     <div className="relative">
