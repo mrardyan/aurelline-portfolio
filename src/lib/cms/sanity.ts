@@ -29,7 +29,9 @@ export const sanityRepo: ContentRepository = {
         title,
         category,
         metrics,
+        metricItems[]{ value, label },
         desc,
+        "coverImage": coverImage.asset->url,
         body[] {
           ...,
           _type == "image" => {
@@ -38,6 +40,7 @@ export const sanityRepo: ContentRepository = {
           }
         },
         "images": images[].asset->url,
+        imageLayout,
         seo {
           title,
           description,
@@ -54,7 +57,9 @@ export const sanityRepo: ContentRepository = {
         "slug": slug.current,
         title,
         publishedAt,
-        excerpt
+        category,
+        excerpt,
+        "coverImage": coverImage.asset->url
       }
     `)
   },
@@ -65,7 +70,9 @@ export const sanityRepo: ContentRepository = {
         "slug": slug.current,
         title,
         publishedAt,
+        category,
         excerpt,
+        "coverImage": coverImage.asset->url,
         body[] {
           ...,
           _type == "image" => {
@@ -73,6 +80,8 @@ export const sanityRepo: ContentRepository = {
             "asset": asset->{ url }
           }
         },
+        "images": images[].asset->url,
+        imageLayout,
         seo {
           title,
           description,
