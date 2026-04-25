@@ -6,6 +6,7 @@ export interface CaseStudy {
   desc: string
   body?: unknown
   images?: string[]
+  seo?: Seo
 }
 
 export interface Post {
@@ -14,9 +15,18 @@ export interface Post {
   publishedAt: string
   excerpt: string
   body?: unknown
+  seo?: Seo
+}
+
+export interface Seo {
+  title?: string
+  description?: string
+  ogImage?: string
+  noIndex?: boolean
 }
 
 export interface Homepage {
+  seo?: Seo
   hero: {
     headline: string
     subtext: string
@@ -38,9 +48,12 @@ export interface Homepage {
   contact: Contact
 }
 
+export type SocialPlatform = 'linkedin' | 'instagram' | 'facebook' | 'x' | 'tiktok' | 'whatsapp' | 'thread'
+
 export interface Contact {
+  tagline?: string
   email: string
-  socialLinks: { platform: string; url: string }[]
+  socialLinks: { platform: SocialPlatform; url: string }[]
 }
 
 // Legacy types kept for section component prop signatures

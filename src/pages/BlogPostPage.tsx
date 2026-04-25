@@ -1,5 +1,6 @@
 import { useParams } from 'react-router'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { cms } from '@/lib/cms'
 import type { Post } from '@/types/content'
 import { PortableTextRenderer } from '@/components/PortableTextRenderer'
@@ -29,7 +30,25 @@ export function BlogPostPage() {
     )
   }
 
+  const seoTitle = post.seo?.title ?? `${post.title} — Rare`
+  const seoDescription = post.seo?.description ?? post.excerpt
+  const seoImage = post.seo?.ogImage ?? ''
+
   return (
+    <>
+    <Helmet>
+      <title>{seoTitle}</title>
+      {post.seo?.noIndex && <meta name="robots" content="noindex, nofollow" />}
+      {seoDescription && <meta name="description" content={seoDescription} />}
+      <meta property="og:title" content={seoTitle} />
+      {seoDescription && <meta property="og:description" content={seoDescription} />}
+      {seoImage && <meta property="og:image" content={seoImage} />}
+      <meta property="og:type" content="article" />
+      <meta name="twitter:card" content={seoImage ? 'summary_large_image' : 'summary'} />
+      <meta name="twitter:title" content={seoTitle} />
+      {seoDescription && <meta name="twitter:description" content={seoDescription} />}
+      {seoImage && <meta name="twitter:image" content={seoImage} />}
+    </Helmet>
     <div className="min-h-screen bg-background p-6 md:p-10 max-w-site-container mx-auto">
       <p className="font-['Open_Sans',sans-serif] text-[13px] text-muted-foreground mb-4">
         {new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -46,5 +65,6 @@ export function BlogPostPage() {
         </div>
       )}
     </div>
+    </>
   )
 }

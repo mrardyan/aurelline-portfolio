@@ -4,6 +4,7 @@ export const homepage = defineType({
   name: 'homepage',
   title: 'Homepage',
   type: 'document',
+  preview: { prepare: () => ({ title: 'Homepage' }) },
   fields: [
     defineField({
       name: 'hero',
@@ -112,6 +113,17 @@ export const homepage = defineType({
           ],
           preview: { select: { title: 'title' } },
         },
+      ],
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'object',
+      fields: [
+        defineField({ name: 'title', title: 'Page Title', type: 'string', description: 'Appears in browser tab and search results. ~50–60 chars.' }),
+        defineField({ name: 'description', title: 'Meta Description', type: 'text', rows: 3, description: 'Summary shown in search results. ~150–160 chars.' }),
+        defineField({ name: 'ogImage', title: 'Social Share Image', type: 'image', description: 'Used when shared on LinkedIn, X, WhatsApp etc. Recommended: 1200×630px.', options: { hotspot: true } }),
+        defineField({ name: 'noIndex', title: 'Hide from search engines', type: 'boolean', initialValue: false }),
       ],
     }),
     defineField({

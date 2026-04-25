@@ -1,5 +1,6 @@
 import { useParams } from 'react-router'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { cms } from '@/lib/cms'
 import type { CaseStudy } from '@/types/content'
 import { PortableTextRenderer } from '@/components/PortableTextRenderer'
@@ -29,7 +30,25 @@ export function CaseStudyPage() {
     )
   }
 
+  const seoTitle = caseStudy.seo?.title ?? `${caseStudy.title} — Rare`
+  const seoDescription = caseStudy.seo?.description ?? caseStudy.desc
+  const seoImage = caseStudy.seo?.ogImage ?? ''
+
   return (
+    <>
+    <Helmet>
+      <title>{seoTitle}</title>
+      {caseStudy.seo?.noIndex && <meta name="robots" content="noindex, nofollow" />}
+      {seoDescription && <meta name="description" content={seoDescription} />}
+      <meta property="og:title" content={seoTitle} />
+      {seoDescription && <meta property="og:description" content={seoDescription} />}
+      {seoImage && <meta property="og:image" content={seoImage} />}
+      <meta property="og:type" content="article" />
+      <meta name="twitter:card" content={seoImage ? 'summary_large_image' : 'summary'} />
+      <meta name="twitter:title" content={seoTitle} />
+      {seoDescription && <meta name="twitter:description" content={seoDescription} />}
+      {seoImage && <meta name="twitter:image" content={seoImage} />}
+    </Helmet>
     <div className="min-h-screen bg-background p-6 md:p-10 max-w-site-container mx-auto">
       <h1 className="font-['DM_Sans',sans-serif] font-semibold text-[32px] md:text-[48px] mb-4 text-foreground">
         {caseStudy.title}
@@ -52,5 +71,6 @@ export function CaseStudyPage() {
         </div>
       )}
     </div>
+    </>
   )
 }

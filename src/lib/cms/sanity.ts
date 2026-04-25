@@ -37,7 +37,13 @@ export const sanityRepo: ContentRepository = {
             "asset": asset->{ url }
           }
         },
-        "images": images[].asset->url
+        "images": images[].asset->url,
+        seo {
+          title,
+          description,
+          "ogImage": ogImage.asset->url,
+          noIndex
+        }
       }
     `, { slug })
   },
@@ -66,6 +72,12 @@ export const sanityRepo: ContentRepository = {
             ...,
             "asset": asset->{ url }
           }
+        },
+        seo {
+          title,
+          description,
+          "ogImage": ogImage.asset->url,
+          noIndex
         }
       }
     `, { slug })
@@ -74,6 +86,12 @@ export const sanityRepo: ContentRepository = {
   async getHomepage() {
     return client.fetch<Homepage | null>(`
       *[_type == "homepage"][0] {
+        seo {
+          title,
+          description,
+          "ogImage": ogImage.asset->url,
+          noIndex
+        },
         hero,
         about {
           bio,
@@ -92,6 +110,7 @@ export const sanityRepo: ContentRepository = {
         "services": services[],
         sectionOrder,
         "contact": *[_type == "contact"][0] {
+          tagline,
           email,
           socialLinks
         }
@@ -100,6 +119,6 @@ export const sanityRepo: ContentRepository = {
   },
 
   async getContact() {
-    return client.fetch<Contact | null>(`*[_type == "contact"][0]`)
+    return client.fetch<Contact | null>(`*[_type == "contact"][0]{ tagline, email, socialLinks }`)
   },
 }

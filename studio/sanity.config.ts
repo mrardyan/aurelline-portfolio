@@ -18,11 +18,11 @@ export default defineConfig({
             S.listItem()
               .title('Homepage')
               .id('homepage')
-              .child(S.document().schemaType('homepage').documentId('homepage')),
+              .child(S.document().schemaType('homepage').documentId('580d3622-0289-496b-8e9c-4a2c74df2626')),
             S.listItem()
               .title('Contact')
               .id('contact')
-              .child(S.document().schemaType('contact').documentId('contact')),
+              .child(S.document().schemaType('contact').documentId('83fb03f9-8d49-4811-8cbb-7e9094b7182f')),
             S.divider(),
             S.documentTypeListItem('caseStudy').title('Case Studies'),
             S.documentTypeListItem('post').title('Blog Posts'),

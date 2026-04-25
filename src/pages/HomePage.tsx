@@ -1,4 +1,5 @@
 import { useEffect, useState, Fragment } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { cms } from '@/lib/cms'
 import type { Homepage, CaseStudy } from '@/types/content'
 import { SmoothScroll } from '@/components/SmoothScroll'
@@ -48,8 +49,25 @@ export function HomePage() {
     services: <Services key="services" services={homepage.services} />,
   }
 
+  const seoTitle = homepage.seo?.title ?? 'Rare — Brand & Content Strategist'
+  const seoDescription = homepage.seo?.description ?? ''
+  const seoImage = homepage.seo?.ogImage ?? ''
+
   return (
     <>
+      <Helmet>
+        <title>{seoTitle}</title>
+        {homepage.seo?.noIndex && <meta name="robots" content="noindex, nofollow" />}
+        {seoDescription && <meta name="description" content={seoDescription} />}
+        <meta property="og:title" content={seoTitle} />
+        {seoDescription && <meta property="og:description" content={seoDescription} />}
+        {seoImage && <meta property="og:image" content={seoImage} />}
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content={seoImage ? 'summary_large_image' : 'summary'} />
+        <meta name="twitter:title" content={seoTitle} />
+        {seoDescription && <meta name="twitter:description" content={seoDescription} />}
+        {seoImage && <meta name="twitter:image" content={seoImage} />}
+      </Helmet>
       <SmoothScroll>
         <div className="bg-background min-h-screen w-full transition-colors duration-500 overflow-x-hidden relative">
           <ThemeTransitionOverlay />
@@ -60,7 +78,7 @@ export function HomePage() {
             ctaLabel={homepage.hero.ctaLabel}
           />
           {order.map((section) => sectionMap[section] ?? null)}
-          <Footer scrollToSection={scrollToSection} />
+          <Footer scrollToSection={scrollToSection} contact={homepage.contact} />
         </div>
       </SmoothScroll>
       <CustomCursor />
