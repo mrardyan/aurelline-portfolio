@@ -87,7 +87,7 @@ export function BlogPage() {
                   key={post.slug}
                   className={[
                     'py-6 cursor-pointer group',
-                    i % 2 === 0 ? 'md:pr-8 md:border-r md:border-border' : 'md:pl-8',
+                    i % 2 === 0 ? `md:pr-8 ${!isLastRow ? 'md:border-r md:border-border' : ''}` : 'md:pl-8',
                     !isLastRow ? 'border-b border-border' : '',
                   ].join(' ')}
                   onClick={() => navigate(`/blog/${post.slug}`)}
