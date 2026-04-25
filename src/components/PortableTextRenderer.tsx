@@ -26,7 +26,7 @@ export function PortableTextRenderer({ value }: Props) {
             </h3>
           ),
           normal: ({ children }) => (
-            <p className="font-['Open_Sans',sans-serif] text-[16px] leading-[1.7] text-foreground/80 mb-4">
+            <p className="font-['Open_Sans',sans-serif] text-[16px] leading-[1.7] text-foreground/80 mb-4 max-w-[65ch]">
               {children}
             </p>
           ),
