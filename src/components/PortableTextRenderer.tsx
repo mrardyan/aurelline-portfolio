@@ -3,6 +3,8 @@ import type { ComponentProps } from 'react'
 
 type Value = ComponentProps<typeof PortableText>['value']
 
+export type { Value as PortableTextValue }
+
 interface Props {
   value: Value
 }

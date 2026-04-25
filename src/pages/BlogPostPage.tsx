@@ -3,10 +3,7 @@ import { useEffect, useState } from 'react'
 import { cms } from '@/lib/cms'
 import type { Post } from '@/types/content'
 import { PortableTextRenderer } from '@/components/PortableTextRenderer'
-import type { ComponentProps } from 'react'
-import { PortableText } from '@portabletext/react'
-
-type PortableTextValue = ComponentProps<typeof PortableText>['value']
+import type { PortableTextValue } from '@/components/PortableTextRenderer'
 
 export function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -35,7 +32,7 @@ export function BlogPostPage() {
   return (
     <div className="min-h-screen bg-background p-6 md:p-10 max-w-site-container mx-auto">
       <p className="font-['Open_Sans',sans-serif] text-[13px] text-muted-foreground mb-4">
-        {post.publishedAt}
+        {new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
       </p>
       <h1 className="font-['DM_Sans',sans-serif] font-semibold text-[32px] md:text-[48px] mb-6 text-foreground">
         {post.title}

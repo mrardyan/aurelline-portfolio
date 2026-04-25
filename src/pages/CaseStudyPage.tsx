@@ -3,10 +3,7 @@ import { useEffect, useState } from 'react'
 import { cms } from '@/lib/cms'
 import type { CaseStudy } from '@/types/content'
 import { PortableTextRenderer } from '@/components/PortableTextRenderer'
-import type { ComponentProps } from 'react'
-import { PortableText } from '@portabletext/react'
-
-type PortableTextValue = ComponentProps<typeof PortableText>['value']
+import type { PortableTextValue } from '@/components/PortableTextRenderer'
 
 export function CaseStudyPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -50,7 +47,7 @@ export function CaseStudyPage() {
       {caseStudy.images && caseStudy.images.length > 0 && (
         <div className="mt-10 flex flex-col gap-6">
           {caseStudy.images.map((url, i) => (
-            <img key={i} src={url} alt="" className="w-full" />
+            <img key={i} src={url} alt={`${caseStudy.title} image ${i + 1}`} className="w-full" />
           ))}
         </div>
       )}
