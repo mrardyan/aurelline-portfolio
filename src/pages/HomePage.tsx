@@ -2,6 +2,7 @@ import { useEffect, useState, Fragment } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { cms } from '@/lib/cms'
 import type { Homepage, CaseStudy } from '@/types/content'
+import { PageLoader } from '@/components/PageLoader'
 import { SmoothScroll } from '@/components/SmoothScroll'
 import { ThemeTransitionOverlay } from '@/components/ThemeTransitionOverlay'
 import { CustomCursor } from '@/components/CustomCursor'
@@ -21,16 +22,45 @@ const DEFAULT_SECTION_ORDER = ['about', 'clients', 'expertise', 'caseStudies', '
 export function HomePage() {
   const [homepage, setHomepage] = useState<Homepage | null>(null)
   const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     Promise.all([cms.getHomepage(), cms.getCaseStudies()]).then(([hp, cs]) => {
       setHomepage(hp)
       setCaseStudies(cs)
+
+      if (!hp) {
+        setIsLoading(false)
+        return
+      }
+
+      const imageUrls = [
+        hp.about?.photo,
+        hp.expertise?.image,
+        ...hp.clients.map((c) => c.logo),
+      ].filter(Boolean) as string[]
+
+      if (imageUrls.length === 0) {
+        setIsLoading(false)
+        return
+      }
+
+      Promise.all(
+        imageUrls.map(
+          (url) =>
+            new Promise<void>((resolve) => {
+              const img = new Image()
+              img.onload = () => resolve()
+              img.onerror = () => resolve()
+              img.src = url
+            })
+        )
+      ).then(() => setIsLoading(false))
     })
   }, [])
 
   if (!homepage) {
-    return <div className="min-h-screen bg-background" />
+    return <PageLoader isVisible />
   }
 
   const order = homepage.sectionOrder?.length ? homepage.sectionOrder : DEFAULT_SECTION_ORDER
@@ -55,6 +85,7 @@ export function HomePage() {
 
   return (
     <>
+      <PageLoader isVisible={isLoading} />
       <Helmet>
         <title>{seoTitle}</title>
         {homepage.seo?.noIndex && <meta name="robots" content="noindex, nofollow" />}
