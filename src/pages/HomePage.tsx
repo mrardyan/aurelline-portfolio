@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from 'react'
+import { useEffect, useState, useMemo, Fragment } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { cms } from '@/lib/cms'
 import type { Homepage, CaseStudy } from '@/types/content'
@@ -59,25 +59,28 @@ export function HomePage() {
     })
   }, [])
 
+  const sectionMap = useMemo<Record<string, React.ReactNode>>(() => {
+    if (!homepage) return {}
+    return {
+      about: <About key="about" bio={homepage.about.bio} photo={homepage.about.photo} />,
+      clients: <NotableClients key="clients" clients={homepage.clients} />,
+      expertise: (
+        <Fragment key="expertise">
+          <Expertise image={homepage.expertise.image} title={homepage.expertise.title} />
+          <Works categories={homepage.expertise.categories} />
+        </Fragment>
+      ),
+      caseStudies: <CaseStudies key="caseStudies" caseStudies={caseStudies} />,
+      testimonials: <Testimonials key="testimonials" testimonials={homepage.testimonials} />,
+      services: <Services key="services" services={homepage.services} />,
+    }
+  }, [homepage, caseStudies])
+
   if (!homepage) {
     return <PageLoader isVisible />
   }
 
   const order = homepage.sectionOrder?.length ? homepage.sectionOrder : DEFAULT_SECTION_ORDER
-
-  const sectionMap: Record<string, React.ReactNode> = {
-    about: <About key="about" bio={homepage.about.bio} photo={homepage.about.photo} />,
-    clients: <NotableClients key="clients" clients={homepage.clients} />,
-    expertise: (
-      <Fragment key="expertise">
-        <Expertise image={homepage.expertise.image} title={homepage.expertise.title} />
-        <Works categories={homepage.expertise.categories} />
-      </Fragment>
-    ),
-    caseStudies: <CaseStudies key="caseStudies" caseStudies={caseStudies} />,
-    testimonials: <Testimonials key="testimonials" testimonials={homepage.testimonials} />,
-    services: <Services key="services" services={homepage.services} />,
-  }
 
   const seoTitle = homepage.seo?.title ?? 'Rare — Brand & Content Strategist'
   const seoDescription = homepage.seo?.description ?? ''

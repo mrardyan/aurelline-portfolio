@@ -14,6 +14,7 @@ export function ThemeTransitionProvider({ children }: { children: React.ReactNod
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [transitionColors, setTransitionColors] = useState({ bg: '#564BB4', logo: '#ffffff' })
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isTransitioningRef = useRef(false)
 
   useEffect(() => {
     return () => {
@@ -22,7 +23,7 @@ export function ThemeTransitionProvider({ children }: { children: React.ReactNod
   }, [])
 
   const toggleTheme = useCallback(() => {
-    if (isTransitioning) return
+    if (isTransitioningRef.current) return
 
     const isGoingToDark = resolvedTheme === 'light'
     setTransitionColors({
@@ -30,13 +31,15 @@ export function ThemeTransitionProvider({ children }: { children: React.ReactNod
       logo: isGoingToDark ? '#a89eff' : '#564BB4',
     })
 
+    isTransitioningRef.current = true
     setIsTransitioning(true)
 
     timerRef.current = setTimeout(() => {
       setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
+      isTransitioningRef.current = false
       setIsTransitioning(false)
     }, 1800)
-  }, [isTransitioning, setTheme, resolvedTheme])
+  }, [setTheme, resolvedTheme])
 
   return (
     <ThemeTransitionContext.Provider value={{ isTransitioning, toggleTheme, transitionColors }}>

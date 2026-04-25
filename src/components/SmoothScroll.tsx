@@ -27,8 +27,9 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
     rafId = requestAnimationFrame(raf)
 
     const hash = window.location.hash
+    let scrollTimeoutId: ReturnType<typeof setTimeout> | undefined
     if (hash) {
-      setTimeout(() => {
+      scrollTimeoutId = setTimeout(() => {
         const target = document.querySelector(hash)
         if (target) {
           lenis.scrollTo(target as HTMLElement, { offset: 0, duration: 2 })
@@ -40,6 +41,7 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
 
     return () => {
       cancelAnimationFrame(rafId)
+      clearTimeout(scrollTimeoutId)
       lenis.destroy()
       window.lenis = undefined
     }

@@ -1,6 +1,16 @@
 import { motion } from 'motion/react'
 import type { Client } from '@/types/content'
 
+const gridVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
+}
+
+const clientVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 20 } },
+}
+
 interface NotableClientsProps {
   clients: Client[]
 }
@@ -25,10 +35,7 @@ export function NotableClients({ clients }: NotableClientsProps) {
           </motion.div>
           <div className="p-4 xl:p-10 h-full">
             <motion.div
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
-              }}
+              variants={gridVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -37,10 +44,7 @@ export function NotableClients({ clients }: NotableClientsProps) {
               {clients.map((client) => (
                 <motion.div
                   key={client.name}
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 20 } },
-                  }}
+                  variants={clientVariants}
                   className="flex items-center justify-center cursor-default h-auto md:h-full w-full"
                 >
                   <img

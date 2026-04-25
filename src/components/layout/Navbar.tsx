@@ -4,6 +4,20 @@ import { Menu, X } from 'lucide-react'
 import { ModeToggle } from '@/components/ModeToggle'
 import { Button } from '@/components/ui/button'
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0, x: 20 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.6, staggerChildren: 0.1, ease: [0.22, 1, 0.36, 1] },
+  },
+}
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, x: 10 },
+  visible: { opacity: 1, x: 0 },
+}
+
 interface NavbarProps {
   scrollToSection: (id: string) => void
 }
@@ -22,20 +36,6 @@ export function Navbar({ scrollToSection }: NavbarProps) {
   const handleScroll = (id: string) => {
     setMobileMenuOpen(false)
     scrollToSection(id)
-  }
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0, x: 20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.6, staggerChildren: 0.1, ease: [0.22, 1, 0.36, 1] },
-    },
-  }
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, x: 10 },
-    visible: { opacity: 1, x: 0 },
   }
 
   return (

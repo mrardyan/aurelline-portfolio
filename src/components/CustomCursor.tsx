@@ -1,18 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 export function CustomCursor() {
   const blobRef = useRef<HTMLDivElement>(null)
   const dotRef = useRef<HTMLDivElement>(null)
-  const [mounted, setMounted] = useState(false)
   const initCursor = useRef(false)
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!mounted) return
-
     const blob = blobRef.current
     const dot = dotRef.current
     if (!blob || !dot) return
@@ -52,9 +45,7 @@ export function CustomCursor() {
       document.removeEventListener('mouseleave', handleMouseOut)
       window.removeEventListener('mouseover', handleMouseOver)
     }
-  }, [mounted])
-
-  if (!mounted) return null
+  }, [])
 
   return (
     <>

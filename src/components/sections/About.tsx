@@ -4,6 +4,36 @@ import type { ComponentProps } from 'react'
 
 type PortableTextValue = ComponentProps<typeof PortableText>['value']
 
+const bioComponents: ComponentProps<typeof PortableText>['components'] = {
+  block: {
+    normal: ({ children }) => (
+      <p className="font-['DM_Sans',sans-serif] text-[18px] md:text-[22px] leading-[1.6] text-foreground">
+        {children}
+      </p>
+    ),
+  },
+  marks: {
+    strong: ({ children }) => (
+      <strong className="font-semibold">{children}</strong>
+    ),
+    underline: ({ children }) => (
+      <span className="underline decoration-solid decoration-brand-purple dark:decoration-brand-purple-dark decoration-[15%] underline-offset-[15%] decoration-skip-ink-none">
+        {children}
+      </span>
+    ),
+    link: ({ value, children }) => (
+      <a
+        href={value?.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline text-primary"
+      >
+        {children}
+      </a>
+    ),
+  },
+}
+
 interface AboutProps {
   bio: unknown
   photo: string
@@ -40,38 +70,7 @@ export function About({ bio, photo }: AboutProps) {
             className="p-6 md:p-10 flex items-center"
           >
             <div>
-              <PortableText
-                value={bio as PortableTextValue}
-                components={{
-                  block: {
-                    normal: ({ children }) => (
-                      <p className="font-['DM_Sans',sans-serif] text-[18px] md:text-[22px] leading-[1.6] text-foreground">
-                        {children}
-                      </p>
-                    ),
-                  },
-                  marks: {
-                    strong: ({ children }) => (
-                      <strong className="font-semibold">{children}</strong>
-                    ),
-                    underline: ({ children }) => (
-                      <span className="underline decoration-solid decoration-brand-purple dark:decoration-brand-purple-dark decoration-[15%] underline-offset-[15%] decoration-skip-ink-none">
-                        {children}
-                      </span>
-                    ),
-                    link: ({ value, children }) => (
-                      <a
-                        href={value?.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline text-primary"
-                      >
-                        {children}
-                      </a>
-                    ),
-                  },
-                }}
-              />
+              <PortableText value={bio as PortableTextValue} components={bioComponents} />
             </div>
           </motion.div>
         </div>
