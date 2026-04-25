@@ -39,3 +39,6 @@ analysis/
 # Binary files
 *.node
 *.map
+
+# Git worktrees
+.worktrees/
