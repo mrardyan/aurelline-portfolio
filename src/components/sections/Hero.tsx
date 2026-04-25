@@ -3,9 +3,10 @@ import { Navbar } from '@/components/layout/Navbar'
 
 interface HeroProps {
   scrollToSection: (id: string) => void
+  headline: string
 }
 
-export function Hero({ scrollToSection }: HeroProps) {
+export function Hero({ scrollToSection, headline }: HeroProps) {
   const { scrollYProgress } = useScroll()
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
 
@@ -26,7 +27,7 @@ export function Hero({ scrollToSection }: HeroProps) {
               style={{ opacity }}
               className="font-['DM_Sans',sans-serif] font-medium text-[32px] md:text-[48px] leading-[1.1] text-brand-purple"
             >
-              between viral moments and brand growth.
+              {headline}
             </motion.p>
           </motion.div>
           <div className="h-fit md:h-full px-8 md:p-10 flex flex-col items-end justify-between">

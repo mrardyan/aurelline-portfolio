@@ -1,10 +1,11 @@
 import { motion } from 'motion/react'
 
 interface ExpertiseProps {
-  imageSrc: string
+  image: string
+  title: string
 }
 
-export function Expertise({ imageSrc }: ExpertiseProps) {
+export function Expertise({ image, title }: ExpertiseProps) {
   return (
     <section id="expertise" className="border-b border-border bg-background">
       <div className="max-w-site-container mx-auto">
@@ -16,12 +17,14 @@ export function Expertise({ imageSrc }: ExpertiseProps) {
             className="border-r-0 md:border-r border-border p-6 md:p-10 flex items-end"
           >
             <div className="relative w-full aspect-video">
-              <img
-                alt="Brand Strategy"
-                className="w-full h-full object-cover transition-all duration-700 select-none user-select-none pointer-events-none"
-                src={imageSrc}
-                draggable="false"
-              />
+              {image && (
+                <img
+                  alt="Brand Strategy"
+                  className="w-full h-full object-cover transition-all duration-700 select-none user-select-none pointer-events-none"
+                  src={image}
+                  draggable="false"
+                />
+              )}
             </div>
           </motion.div>
           <motion.div
@@ -31,9 +34,8 @@ export function Expertise({ imageSrc }: ExpertiseProps) {
             className="p-6 md:p-10 flex items-end"
           >
             <p className="font-['DM_Sans',sans-serif] text-[28px] md:text-[40px] leading-[1.2] text-foreground">
-              Building consumer brands through{' '}
               <span className="underline decoration-brand-purple dark:decoration-brand-purple-dark decoration-[15%] underline-offset-[15%] decoration-skip-ink-none">
-                content, KOL & growth strategy
+                {title}
               </span>
             </p>
           </motion.div>
