@@ -1,14 +1,14 @@
-import type { CaseStudy, Work, Post } from '@/types/content'
+import type { CaseStudy, Post, Homepage, Contact } from '@/types/content'
 import { staticRepo } from './static'
 import { sanityRepo } from './sanity'
 
 export interface ContentRepository {
   getCaseStudies(): Promise<CaseStudy[]>
   getCaseStudy(slug: string): Promise<CaseStudy | null>
-  getWorks(): Promise<Work[]>
-  getWork(slug: string): Promise<Work | null>
   getPosts(): Promise<Post[]>
   getPost(slug: string): Promise<Post | null>
+  getHomepage(): Promise<Homepage | null>
+  getContact(): Promise<Contact | null>
 }
 
 export const cms: ContentRepository =
