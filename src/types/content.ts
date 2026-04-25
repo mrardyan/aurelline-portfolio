@@ -6,6 +6,9 @@ export interface CaseStudy {
   desc: string
   body?: unknown
   images?: string[]
+  coverImage?: string
+  metricItems?: { value: string; label: string }[]
+  imageLayout?: 'carousel' | 'masonry'
   seo?: Seo
 }
 
@@ -15,6 +18,10 @@ export interface Post {
   publishedAt: string
   excerpt: string
   body?: unknown
+  category?: string
+  coverImage?: string
+  images?: string[]
+  imageLayout?: 'carousel' | 'masonry'
   seo?: Seo
 }
 
