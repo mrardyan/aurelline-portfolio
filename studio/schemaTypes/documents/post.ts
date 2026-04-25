@@ -25,16 +25,49 @@ export const post = defineType({
       validation: (R) => R.required(),
     }),
     defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      description: 'e.g. "UX Research", "Strategy", "Process"',
+    }),
+    defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
       rows: 3,
     }),
     defineField({
+      name: 'coverImage',
+      title: 'Cover Image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Full-width image displayed between the header and body. Recommended: 1600×600px.',
+    }),
+    defineField({
       name: 'body',
       title: 'Body',
       type: 'array',
       of: [{ type: 'block' }, { type: 'image', options: { hotspot: true } }],
+    }),
+    defineField({
+      name: 'images',
+      title: 'Gallery Images',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      description: 'Displayed after the body content as a gallery.',
+    }),
+    defineField({
+      name: 'imageLayout',
+      title: 'Gallery Layout',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Masonry', value: 'masonry' },
+          { title: 'Carousel', value: 'carousel' },
+        ],
+        layout: 'radio',
+      },
+      description: 'How to display gallery images. Defaults to masonry if unset.',
     }),
     defineField({
       name: 'seo',
