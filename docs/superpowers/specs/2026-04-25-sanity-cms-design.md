@@ -34,14 +34,8 @@ portfolio/                        ← existing Vite React SPA
         │   ├── caseStudy.ts
         │   └── post.ts
         └── singletons/
-            ├── hero.ts
-            ├── about.ts
-            ├── clients.ts
-            ├── expertise.ts
-            ├── testimonials.ts
-            ├── services.ts
-            ├── contact.ts
-            └── homepageLayout.ts
+            ├── homepage.ts       ← hero, about, clients, expertise, testimonials, services, sectionOrder
+            └── contact.ts
 ```
 
 ---
@@ -50,8 +44,8 @@ portfolio/                        ← existing Vite React SPA
 
 **Runtime (portfolio):**
 1. User visits portfolio → React app boots
-2. `HomePage` calls `cms.getHomepageLayout()` + all singleton getters in parallel
-3. `sanityRepo` fires GROQ queries via `@sanity/client` against the Sanity CDN
+2. `HomePage` calls `cms.getHomepage()` — a single GROQ query that fetches the `homepage` document with `contact` embedded inline
+3. `sanityRepo` fires the query via `@sanity/client` against the Sanity CDN
 4. Sanity CDN responds with JSON → sections rendered in the configured order
 
 **Content editing (Studio):**
@@ -89,67 +83,53 @@ Full documents with card listings on the homepage and detail pages with rich-tex
 
 ### Singleton Documents
 
-One document per singleton, queried by fixed document ID. Edited in place in Studio (no list view).
+Two singleton documents, each queried by fixed document ID. Edited in place in Studio (no list view).
 
-#### `hero`
-| Field | Type |
-|---|---|
-| `headline` | string |
-| `subtext` | string |
-| `ctaLabel` | string |
+#### `homepage`
 
-#### `about`
-| Field | Type |
-|---|---|
-| `bio` | Portable Text |
-| `photo` | image |
+One document covering all homepage sections and layout order.
 
-#### `clients`
-| Field | Type |
-|---|---|
-| `items` | array of { name: string, logo: image } |
+| Field | Type | Notes |
+|---|---|---|
+| `hero.headline` | string | |
+| `hero.subtext` | string | |
+| `hero.ctaLabel` | string | |
+| `about.bio` | Portable Text | |
+| `about.photo` | image | |
+| `clients.items` | array of { name, logo (image) } | |
+| `expertise.image` | image | illustration shown in Expertise block |
+| `expertise.title` | string | tagline text |
+| `expertise.categories` | array of { title, desc } | the 3 animated discipline items |
+| `testimonials.items` | array of { quote, author, role, company } | |
+| `services.items` | array of { title, items[] (string list) } | |
+| `sectionOrder` | array of strings | drag-to-reorder in Studio |
 
-#### `expertise`
-Covers both the Expertise visual block (illustration + tagline) and the animated discipline categories list.
+Valid `sectionOrder` values: `about`, `clients`, `expertise`, `caseStudies`, `testimonials`, `services`.
 
-| Field | Type |
-|---|---|
-| `image` | image |
-| `title` | string (the tagline) |
-| `categories` | array of { title: string, desc: string } |
-
-#### `testimonials`
-| Field | Type |
-|---|---|
-| `items` | array of { quote, author, role, company } |
-
-#### `services`
-| Field | Type |
-|---|---|
-| `items` | array of { title: string, items: string[] } |
+**Fixed order (not configurable):** Navbar → Hero → `[sectionOrder]` → Footer
 
 #### `contact`
+
+Standalone singleton used by both `/contact` page and embedded into `getHomepage()` via a single GROQ query.
+
 | Field | Type |
 |---|---|
 | `email` | string |
 | `socialLinks` | array of { platform: string, url: string } |
 
-#### `homepageLayout`
-Controls the render order of configurable sections on the homepage.
-
-| Field | Type | Notes |
-|---|---|---|
-| `sections` | array of strings | drag-to-reorder in Studio |
-
-Valid section values: `about`, `clients`, `expertise`, `caseStudies`, `testimonials`, `services`.
-
-**Fixed order (not configurable):** Navbar → Hero → `[sections]` → Footer
+**GROQ pattern** — homepage query embeds contact inline:
+```groq
+*[_type == "homepage"][0] {
+  ...,
+  "contact": *[_type == "contact"][0]
+}
+```
 
 ---
 
 ## ContentRepository Interface Changes
 
-Remove `Work`-related methods. Add singleton getters.
+Remove `Work`-related methods. Replace individual singleton getters with `getHomepage()` and `getContact()`.
 
 ```ts
 export interface ContentRepository {
@@ -160,14 +140,8 @@ export interface ContentRepository {
   getPost(slug: string): Promise<Post | null>
 
   // Singletons
-  getHero(): Promise<Hero>
-  getAbout(): Promise<About>
-  getClients(): Promise<Client[]>
-  getExpertise(): Promise<Expertise>
-  getTestimonials(): Promise<Testimonial[]>
-  getServices(): Promise<Service[]>
-  getContact(): Promise<Contact>
-  getHomepageLayout(): Promise<string[]>
+  getHomepage(): Promise<Homepage>   // includes embedded contact data
+  getContact(): Promise<Contact>     // used directly by /contact page
 }
 ```
 
@@ -180,21 +154,26 @@ export interface ContentRepository {
 New types to add:
 
 ```ts
-export interface Hero {
-  headline: string
-  subtext: string
-  ctaLabel: string
-}
-
-export interface About {
-  bio: unknown        // Portable Text blocks
-  photo: string       // Sanity image URL
-}
-
-export interface Expertise {
-  image: string
-  title: string
-  categories: { title: string; desc: string }[]
+export interface Homepage {
+  hero: {
+    headline: string
+    subtext: string
+    ctaLabel: string
+  }
+  about: {
+    bio: unknown       // Portable Text blocks
+    photo: string      // Sanity image URL
+  }
+  clients: { name: string; logo: string }[]
+  expertise: {
+    image: string
+    title: string
+    categories: { title: string; desc: string }[]
+  }
+  testimonials: { quote: string; author: string; role: string; company: string }[]
+  services: { title: string; items: string[] }[]
+  sectionOrder: string[]
+  contact: Contact     // embedded from contact singleton
 }
 
 export interface Contact {
@@ -203,7 +182,7 @@ export interface Contact {
 }
 ```
 
-Existing `Client`, `Testimonial`, `Service`, `WorkCategory` types stay — `WorkCategory` is reused for `Expertise.categories`.
+Existing `Client`, `Testimonial`, `Service`, `WorkCategory` types stay but become redundant over time — `Homepage` is the authoritative shape going forward.
 
 ---
 
