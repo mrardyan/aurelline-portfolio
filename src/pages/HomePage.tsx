@@ -56,6 +56,8 @@ export function HomePage() {
           <Hero
             scrollToSection={scrollToSection}
             headline={homepage.hero.headline}
+            subtext={homepage.hero.subtext}
+            ctaLabel={homepage.hero.ctaLabel}
           />
           {order.map((section) => sectionMap[section] ?? null)}
           <Footer scrollToSection={scrollToSection} />

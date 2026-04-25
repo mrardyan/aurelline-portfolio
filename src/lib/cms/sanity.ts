@@ -30,7 +30,13 @@ export const sanityRepo: ContentRepository = {
         category,
         metrics,
         desc,
-        body,
+        body[] {
+          ...,
+          _type == "image" => {
+            ...,
+            "asset": asset->{ url }
+          }
+        },
         "images": images[].asset->url
       }
     `, { slug })
@@ -54,7 +60,13 @@ export const sanityRepo: ContentRepository = {
         title,
         publishedAt,
         excerpt,
-        body
+        body[] {
+          ...,
+          _type == "image" => {
+            ...,
+            "asset": asset->{ url }
+          }
+        }
       }
     `, { slug })
   },

@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react'
+import { useNavigate } from 'react-router'
 import { useOnceInView } from '@/hooks/useOnceInView'
 import type { CaseStudy } from '@/types/content'
 
@@ -7,6 +8,7 @@ interface CaseStudiesProps {
 }
 
 export function CaseStudies({ caseStudies }: CaseStudiesProps) {
+  const navigate = useNavigate()
   const [headingRef, headingInView] = useOnceInView<HTMLDivElement>(0.3)
   const [gridRef, gridInView] = useOnceInView<HTMLDivElement>(0.05)
 
@@ -27,6 +29,7 @@ export function CaseStudies({ caseStudies }: CaseStudiesProps) {
               key={caseStudy.slug}
               className={`border border-border p-6 md:p-8 bg-card group cursor-pointer transition-colors hover:border-brand-purple ${gridInView ? 'anim-fade-in-up' : 'opacity-0'}`}
               style={gridInView ? { animationDelay: `${0.1 + index * 0.15}s` } : undefined}
+              onClick={() => navigate(`/case-studies/${caseStudy.slug}`)}
             >
               <div className="flex items-start justify-between mb-4">
                 <span className="font-['DM_Sans',sans-serif] text-[12px] tracking-[0.7px] uppercase text-muted-foreground">

@@ -4,9 +4,11 @@ import { Navbar } from '@/components/layout/Navbar'
 interface HeroProps {
   scrollToSection: (id: string) => void
   headline: string
+  subtext?: string
+  ctaLabel?: string
 }
 
-export function Hero({ scrollToSection, headline }: HeroProps) {
+export function Hero({ scrollToSection, headline, subtext, ctaLabel }: HeroProps) {
   const { scrollYProgress } = useScroll()
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
 
@@ -29,6 +31,19 @@ export function Hero({ scrollToSection, headline }: HeroProps) {
             >
               {headline}
             </motion.p>
+            {subtext && (
+              <p className="font-['DM_Sans',sans-serif] text-[16px] md:text-[18px] leading-[1.6] text-foreground/70">
+                {subtext}
+              </p>
+            )}
+            {ctaLabel && (
+              <button
+                onClick={() => scrollToSection('about')}
+                className="font-['DM_Sans',sans-serif] font-medium text-[14px] tracking-[0.5px] uppercase text-brand-purple border border-brand-purple px-5 py-2 w-fit hover:bg-brand-purple hover:text-white transition-colors duration-200"
+              >
+                {ctaLabel}
+              </button>
+            )}
           </motion.div>
           <div className="h-fit md:h-full px-8 md:p-10 flex flex-col items-end justify-between">
             <Navbar scrollToSection={scrollToSection} />

@@ -26,7 +26,7 @@ export function BlogPage() {
                 {post.title}
               </h2>
               <p className="font-['Open_Sans',sans-serif] text-[14px] text-muted-foreground mb-2">
-                {post.publishedAt}
+                {new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
               </p>
               <p className="font-['Open_Sans',sans-serif] text-[15px] text-foreground/80">{post.excerpt}</p>
             </div>
