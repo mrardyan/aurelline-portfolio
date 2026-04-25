@@ -25,15 +25,38 @@ export const caseStudy = defineType({
     }),
     defineField({
       name: 'metrics',
-      title: 'Metrics',
+      title: 'Metrics (legacy)',
       type: 'string',
-      description: 'e.g. "12M+ Reach • 450% Engagement Increase"',
+      description: 'Used on homepage cards. e.g. "12M+ Reach • 450% Engagement Increase"',
+    }),
+    defineField({
+      name: 'metricItems',
+      title: 'Metric Items',
+      type: 'array',
+      description: 'Structured metrics shown in the detail page header bar.',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({ name: 'value', title: 'Value', type: 'string', description: 'e.g. "+40%"' }),
+            defineField({ name: 'label', title: 'Label', type: 'string', description: 'e.g. "Conversion rate"' }),
+          ],
+          preview: { select: { title: 'value', subtitle: 'label' } },
+        },
+      ],
     }),
     defineField({
       name: 'desc',
       title: 'Summary',
       type: 'text',
       rows: 3,
+    }),
+    defineField({
+      name: 'coverImage',
+      title: 'Cover Image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Full-width image displayed between the header and body. Recommended: 1600×600px.',
     }),
     defineField({
       name: 'body',
@@ -43,9 +66,23 @@ export const caseStudy = defineType({
     }),
     defineField({
       name: 'images',
-      title: 'Images',
+      title: 'Gallery Images',
       type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
+      description: 'Displayed after the body content as a gallery.',
+    }),
+    defineField({
+      name: 'imageLayout',
+      title: 'Gallery Layout',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Masonry', value: 'masonry' },
+          { title: 'Carousel', value: 'carousel' },
+        ],
+        layout: 'radio',
+      },
+      description: 'How to display gallery images. Defaults to masonry if unset.',
     }),
     defineField({
       name: 'seo',
