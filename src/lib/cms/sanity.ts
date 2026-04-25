@@ -11,8 +11,8 @@ const notConfigured = (): never => {
 export const sanityRepo: ContentRepository = {
   getCaseStudies: async () => notConfigured(),
   getCaseStudy: async (_slug) => notConfigured(),
-  getWorks: async () => notConfigured(),
-  getWork: async (_slug) => notConfigured(),
   getPosts: async () => notConfigured(),
   getPost: async (_slug) => notConfigured(),
+  getHomepage: async () => notConfigured(),
+  getContact: async () => notConfigured(),
 }
