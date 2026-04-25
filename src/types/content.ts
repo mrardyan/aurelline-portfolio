@@ -8,14 +8,6 @@ export interface CaseStudy {
   images?: string[]
 }
 
-export interface Work {
-  slug: string
-  title: string
-  category: string
-  thumbnail?: string
-  body?: unknown
-}
-
 export interface Post {
   slug: string
   title: string
@@ -24,6 +16,34 @@ export interface Post {
   body?: unknown
 }
 
+export interface Homepage {
+  hero: {
+    headline: string
+    subtext: string
+    ctaLabel: string
+  }
+  about: {
+    bio: unknown
+    photo: string
+  }
+  clients: { name: string; logo: string }[]
+  expertise: {
+    image: string
+    title: string
+    categories: { title: string; desc: string }[]
+  }
+  testimonials: { quote: string; author: string; role: string; company: string }[]
+  services: { title: string; items: string[] }[]
+  sectionOrder: string[]
+  contact: Contact
+}
+
+export interface Contact {
+  email: string
+  socialLinks: { platform: string; url: string }[]
+}
+
+// Legacy types kept for section component prop signatures
 export interface Client {
   name: string
   logo: string
